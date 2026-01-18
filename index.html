@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORKIFY // QUANTUM EDITION</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="plasma-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="app-container">
+    <header>
+        <div class="logo">SPORKIFY_QE</div>
+        <div class="search-hud">
+            <input type="text" id="query" placeholder="Search recipes..." onkeypress="if(event.key==='Enter') execute()">
+            <button class="btn-execute" onclick="execute()">Search</button>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-num" id="recipeCount">0</div>
+                <div class="stat-label">Recipes</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="results">
+            <div class="empty-state">Standby Mode</div>
+        </section>
+        <section id="viewport">
+            <div class="empty-state">Quantum Viewer Idle</div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
