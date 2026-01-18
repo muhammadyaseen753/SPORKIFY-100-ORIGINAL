@@ -11,10 +11,14 @@
     --accent-purple: #b400ff;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     font-family: 'Inter', -apple-system, sans-serif;
     color: var(--text-bright);
     display: flex;
@@ -25,7 +29,6 @@ body {
     position: relative;
 }
 
-/* LIQUID PLASMA BACKGROUND WITH TRIPLE GRADIENT */
 .plasma-bg {
     position: fixed;
     inset: 0;
@@ -41,7 +44,6 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* FLOATING ORBS */
 .orb {
     position: fixed;
     border-radius: 50%;
@@ -52,8 +54,8 @@ body {
 }
 
 .orb1 {
-    width: 500px;
-    height: 500px;
+    width: min(500px, 60vw);
+    height: min(500px, 60vw);
     background: radial-gradient(circle, rgba(255,0,128,0.8), transparent);
     top: -10%;
     left: -10%;
@@ -61,8 +63,8 @@ body {
 }
 
 .orb2 {
-    width: 600px;
-    height: 600px;
+    width: min(600px, 70vw);
+    height: min(600px, 70vw);
     background: radial-gradient(circle, rgba(0,212,255,0.8), transparent);
     bottom: -15%;
     right: -15%;
@@ -70,8 +72,8 @@ body {
 }
 
 .orb3 {
-    width: 400px;
-    height: 400px;
+    width: min(400px, 50vw);
+    height: min(400px, 50vw);
     background: radial-gradient(circle, rgba(180,0,255,0.8), transparent);
     top: 50%;
     left: 50%;
@@ -80,12 +82,12 @@ body {
 
 @keyframes float1 {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(150px, 150px) scale(1.3); }
+    50% { transform: translate(min(150px, 15vw), min(150px, 15vh)) scale(1.3); }
 }
 
 @keyframes float2 {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(-120px, -120px) scale(1.2); }
+    50% { transform: translate(min(-120px, -12vw), min(-120px, -12vh)) scale(1.2); }
 }
 
 @keyframes float3 {
@@ -93,23 +95,38 @@ body {
     50% { transform: translate(-50%, -50%) scale(1.4) rotate(180deg); }
 }
 
-/* GLASS MORPHISM CONTAINER */
 .app-container {
-    width: 96vw;
-    height: 92vh;
+    width: clamp(320px, 96vw, 2400px);
+    height: clamp(500px, 92vh, 1200px);
     background: var(--glass);
     -webkit-backdrop-filter: blur(80px) saturate(200%);
     backdrop-filter: blur(80px) saturate(200%);
     border: 1px solid var(--glass-border);
-    border-radius: 40px;
+    border-radius: clamp(0px, 5vw, 40px);
     display: grid;
-    grid-template-rows: 110px 1fr;
+    grid-template-rows: auto 1fr;
     box-shadow: 
         0 50px 100px rgba(0,0,0,0.5),
         inset 0 1px 0 rgba(255,255,255,0.2);
     overflow: hidden;
     position: relative;
     animation: container-entry 1s cubic-bezier(0.2, 1, 0.2, 1);
+    margin: clamp(0px, 2vh, 20px);
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        margin: 0;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+    .app-container {
+        height: 100vh;
+    }
 }
 
 @keyframes container-entry {
@@ -117,16 +134,25 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* HEADER */
 header {
-    padding: 0 60px;
+    padding: clamp(15px, 4vw, 60px);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: clamp(15px, 3vw, 30px);
     border-bottom: 1px solid var(--glass-border);
     background: rgba(255, 255, 255, 0.03);
     position: relative;
     overflow: hidden;
+    min-height: clamp(70px, 15vh, 110px);
+}
+
+@media (max-width: 900px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 header::before {
@@ -146,7 +172,7 @@ header::before {
 }
 
 .logo {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
     font-weight: 900;
     letter-spacing: -2px;
     background: linear-gradient(135deg, #ff0080, #00d4ff, #b400ff);
@@ -157,6 +183,7 @@ header::before {
     animation: gradient-text 8s ease infinite;
     position: relative;
     z-index: 1;
+    white-space: nowrap;
 }
 
 @keyframes gradient-text {
@@ -164,36 +191,49 @@ header::before {
     50% { background-position: 100% 50%; }
 }
 
-/* SEARCH HUD */
 .search-hud {
     display: flex;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: 100px;
-    width: 520px;
-    padding: 10px;
+    width: 100%;
+    max-width: clamp(280px, 90vw, 520px);
+    padding: clamp(8px, 1.5vw, 10px);
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     z-index: 1;
 }
 
+@media (min-width: 900px) {
+    .search-hud {
+        flex: 1;
+        min-width: 300px;
+    }
+}
+
 .search-hud:focus-within {
     background: rgba(255, 255, 255, 0.15);
-    width: 600px;
     box-shadow: 
         0 0 60px rgba(255,0,128,0.6),
         0 0 100px rgba(0,212,255,0.4);
     transform: translateY(-2px);
 }
 
+@media (max-width: 900px) {
+    .search-hud:focus-within {
+        transform: translateY(0);
+    }
+}
+
 input {
     flex: 1;
     background: transparent;
     border: none;
-    padding: 0 25px;
+    padding: 0 clamp(15px, 3vw, 25px);
     color: white;
-    font-size: 1.05rem;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
     outline: none;
+    min-width: 0;
 }
 
 input::placeholder {
@@ -205,15 +245,17 @@ input::placeholder {
     background: linear-gradient(135deg, var(--accent), var(--accent-purple));
     color: white;
     border: none;
-    padding: 12px 35px;
+    padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 35px);
     border-radius: 100px;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .btn-execute::before {
@@ -239,27 +281,40 @@ input::placeholder {
     box-shadow: 0 10px 30px rgba(255,0,128,0.6);
 }
 
+@media (hover: none) {
+    .btn-execute:hover {
+        transform: scale(1);
+    }
+}
+
 .btn-execute:active {
     transform: scale(0.95);
 }
 
-/* STATS DISPLAY */
 .stats {
-    display: flex;
-    gap: 30px;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(70px, 15vw, 100px), 1fr));
+    gap: clamp(10px, 2vw, 30px);
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+    .stats {
+        display: flex;
+        width: auto;
+    }
 }
 
 .stat-item {
     text-align: center;
-    padding: 10px 20px;
+    padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 20px);
     background: rgba(255,255,255,0.05);
-    border-radius: 15px;
+    border-radius: clamp(10px, 2vw, 15px);
     border: 1px solid rgba(255,255,255,0.1);
 }
 
 .stat-num {
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
     font-weight: 900;
     background: linear-gradient(135deg, var(--accent), var(--accent-blue));
     -webkit-background-clip: text;
@@ -268,30 +323,48 @@ input::placeholder {
 }
 
 .stat-label {
-    font-size: 0.65rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.65rem);
     color: var(--text-soft);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 3px;
 }
 
-/* MAIN CONTENT */
 main {
     display: grid;
-    grid-template-columns: 450px 1fr;
+    grid-template-columns: 1fr;
     overflow: hidden;
 }
 
-/* RESULTS SIDEBAR */
+@media (min-width: 768px) {
+    main {
+        grid-template-columns: clamp(250px, 30vw, 350px) 1fr;
+    }
+}
+
+@media (min-width: 1200px) {
+    main {
+        grid-template-columns: clamp(350px, 25vw, 450px) 1fr;
+    }
+}
+
 #results {
     border-right: 1px solid var(--glass-border);
     overflow-y: auto;
-    padding: 25px;
+    padding: clamp(15px, 3vw, 25px);
     background: rgba(0,0,0,0.1);
 }
 
+@media (max-width: 767px) {
+    #results {
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+        max-height: clamp(200px, 30vh, 300px);
+    }
+}
+
 #results::-webkit-scrollbar {
-    width: 8px;
+    width: clamp(6px, 1vw, 8px);
 }
 
 #results::-webkit-scrollbar-track {
@@ -307,12 +380,12 @@ main {
 .card {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 24px;
+    gap: clamp(12px, 2vw, 20px);
+    padding: clamp(15px, 2.5vw, 20px);
+    border-radius: clamp(16px, 3vw, 24px);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    margin-bottom: 15px;
+    margin-bottom: clamp(10px, 2vw, 15px);
     border: 1px solid transparent;
     background: rgba(255,255,255,0.03);
     position: relative;
@@ -334,10 +407,12 @@ main {
     left: 100%;
 }
 
-.card:hover {
-    background: rgba(255,255,255,0.12);
-    transform: translateX(10px) scale(1.02);
-    box-shadow: 0 10px 40px rgba(255,0,128,0.3);
+@media (hover: hover) {
+    .card:hover {
+        background: rgba(255,255,255,0.12);
+        transform: translateX(10px) scale(1.02);
+        box-shadow: 0 10px 40px rgba(255,0,128,0.3);
+    }
 }
 
 .card.active {
@@ -350,39 +425,52 @@ main {
 }
 
 .card img {
-    width: 80px;
-    height: 80px;
+    width: clamp(60px, 12vw, 80px);
+    height: clamp(60px, 12vw, 80px);
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255,255,255,0.2);
     transition: all 0.4s;
+    flex-shrink: 0;
 }
 
-.card:hover img {
-    transform: rotate(5deg) scale(1.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+@media (hover: hover) {
+    .card:hover img {
+        transform: rotate(5deg) scale(1.1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+}
+
+.card-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .card-info h4 {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
     margin-bottom: 5px;
     font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .card-info p {
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.75rem);
     color: var(--text-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* VIEWPORT */
 #viewport {
     overflow-y: auto;
-    padding: 60px;
+    padding: clamp(20px, 5vw, 60px);
     scroll-behavior: smooth;
 }
 
 #viewport::-webkit-scrollbar {
-    width: 10px;
+    width: clamp(8px, 1.5vw, 10px);
 }
 
 #viewport::-webkit-scrollbar-track {
@@ -396,10 +484,10 @@ main {
 
 .hero-img {
     width: 100%;
-    height: 500px;
-    border-radius: 40px;
+    height: clamp(200px, 40vh, 500px);
+    border-radius: clamp(20px, 4vw, 40px);
     object-fit: cover;
-    margin-bottom: -120px;
+    margin-bottom: clamp(-40px, -15vh, -120px);
     -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
@@ -412,16 +500,18 @@ main {
 }
 
 .recipe-title {
-    font-size: 5.5rem;
+    font-size: clamp(2rem, 8vw, 5.5rem);
     font-weight: 900;
-    line-height: 0.85;
-    margin-bottom: 40px;
+    line-height: 0.9;
+    margin-bottom: clamp(20px, 4vh, 40px);
     text-shadow: 0 20px 60px rgba(0,0,0,0.8);
     background: linear-gradient(135deg, #ffffff, #ff0080, #00d4ff);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: title-entry 1s 0.2s cubic-bezier(0.2, 1, 0.2, 1) backwards;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 @keyframes title-entry {
@@ -431,10 +521,48 @@ main {
 
 .grid-info {
     display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 50px;
-    margin-top: 60px;
+    grid-template-columns: 1fr;
+    gap: clamp(25px, 5vw, 50px);
+    margin-top: clamp(30px, 6vh, 60px);
     animation: content-entry 1s 0.4s cubic-bezier(0.2, 1, 0.2, 1) backwards;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    .grid-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid-info {
+        grid-template-columns: 1fr clamp(300px, 25vw, 350px);
+    }
+}
+
+.recipe-description {
+    background: rgba(0,0,0,0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: clamp(20px, 4vw, 40px);
+    border-radius: clamp(20px, 3vw, 30px);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 1199px) {
+    .recipe-description {
+        order: 3;
+    }
+    
+    .ing-list {
+        order: 1;
+    }
+    
+    .meta-panel {
+        order: 2;
+    }
 }
 
 @keyframes content-entry {
@@ -447,24 +575,28 @@ main {
     background: rgba(0,0,0,0.3);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 30px;
+    padding: clamp(20px, 4vw, 40px);
+    border-radius: clamp(20px, 3vw, 30px);
     border: 1px solid rgba(255,255,255,0.1);
 }
 
 .ing-list li {
-    padding: 18px 0;
+    padding: clamp(12px, 2vh, 18px) 0;
     border-bottom: 1px solid rgba(255,255,255,0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: all 0.3s;
+    font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
-.ing-list li:hover {
-    padding-left: 15px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
+@media (hover: hover) {
+    .ing-list li:hover {
+        padding-left: 15px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+    }
 }
 
 .ing-list li:last-child {
@@ -474,24 +606,25 @@ main {
 .ing-list li b {
     color: var(--accent);
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    white-space: nowrap;
 }
 
 .meta-panel {
     background: var(--glass-heavy);
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
-    padding: 40px;
-    border-radius: 30px;
+    padding: clamp(20px, 4vw, 40px);
+    border-radius: clamp(20px, 3vw, 30px);
     height: fit-content;
     border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
 .meta-header {
-    margin-bottom: 30px;
-    font-size: 0.75rem;
-    letter-spacing: 3px;
+    margin-bottom: clamp(20px, 3vh, 30px);
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+    letter-spacing: clamp(2px, 0.5vw, 3px);
     background: linear-gradient(135deg, var(--accent), var(--accent-purple));
     -webkit-background-clip: text;
     background-clip: text;
@@ -500,29 +633,31 @@ main {
 }
 
 .meta-item {
-    margin-bottom: 20px;
-    padding: 15px;
+    margin-bottom: clamp(15px, 2vh, 20px);
+    padding: clamp(12px, 2vw, 15px);
     background: rgba(255,255,255,0.05);
-    border-radius: 15px;
+    border-radius: clamp(12px, 2vw, 15px);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .meta-label {
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
     color: var(--text-soft);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .meta-value {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
     font-weight: 900;
     background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    white-space: nowrap;
 }
 
 .btn-instructions {
@@ -531,13 +666,13 @@ main {
     background: linear-gradient(135deg, var(--accent), var(--accent-purple));
     color: white;
     text-decoration: none;
-    padding: 18px;
+    padding: clamp(14px, 2.5vh, 18px);
     border-radius: 100px;
     font-weight: 800;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top: 30px;
+    letter-spacing: clamp(1px, 0.3vw, 2px);
+    margin-top: clamp(20px, 3vh, 30px);
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
@@ -556,14 +691,15 @@ main {
     transition: width 0.6s, height 0.6s;
 }
 
-.btn-instructions:hover::before {
-    width: 400px;
-    height: 400px;
-}
-
-.btn-instructions:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255,0,128,0.6);
+@media (hover: hover) {
+    .btn-instructions:hover::before {
+        width: 400px;
+        height: 400px;
+    }
+    .btn-instructions:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(255,0,128,0.6);
+    }
 }
 
 .empty-state {
@@ -571,12 +707,14 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    letter-spacing: 6px;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    letter-spacing: clamp(3px, 1vw, 6px);
     opacity: 0.3;
     text-transform: uppercase;
     font-weight: 900;
     animation: pulse 2s infinite;
+    padding: 20px;
+    text-align: center;
 }
 
 @keyframes pulse {
@@ -586,15 +724,15 @@ main {
 
 .loading {
     display: flex;
-    gap: 10px;
+    gap: clamp(8px, 2vw, 10px);
     align-items: center;
     justify-content: center;
     height: 100%;
 }
 
 .loading-dot {
-    width: 15px;
-    height: 15px;
+    width: clamp(12px, 3vw, 15px);
+    height: clamp(12px, 3vw, 15px);
     border-radius: 50%;
     background: var(--accent);
     animation: loading-bounce 1.4s infinite ease-in-out both;
@@ -606,4 +744,85 @@ main {
 @keyframes loading-bounce {
     0%, 80%, 100% { transform: scale(0); }
     40% { transform: scale(1); }
+}
+
+@media (hover: none) {
+    .card:active {
+        background: rgba(255,255,255,0.12);
+        transform: scale(0.98);
+    }
+    
+    .btn-execute:active,
+    .btn-instructions:active {
+        transform: scale(0.95);
+    }
+}
+
+@media (min-width: 1920px) {
+    .app-container {
+        max-width: 90vw;
+    }
+}
+
+@media print {
+    .plasma-bg,
+    .orb,
+    header,
+    #results,
+    .btn-instructions {
+        display: none;
+    }
+    
+    .app-container {
+        background: white;
+        color: black;
+        border: none;
+        box-shadow: none;
+    }
+    
+    #viewport {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+    
+    #results {
+        max-height: 250px;
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .recipe-title {
+        font-size: 3rem;
+    }
+    body {
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text-bright);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0a0a0a;
+    position: relative;
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    max-height: 40vh;
+    object-fit: cover;
+}
+
+.app-container {
+    max-width: 100vw;
+    margin: 0;
+    height: 100vh;
+}
 }

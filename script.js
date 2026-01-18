@@ -37,7 +37,6 @@ async function load(id, el) {
     view.innerHTML = '<div class="loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
 
     try {
-        // FIXED: fetch BEFORE using data, use correct id parameter, remove search query
         const res = await fetch(`${API}/${id}?key=${KEY}`);
         const data = await res.json();
         const r = data.data.recipe;
